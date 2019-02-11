@@ -14,14 +14,14 @@
 #define S6 13
 #define S7 14
 #define S8 15 
-#define SENSORS_COUNT 8
+#define SENSORS_COUNT 3
 #define AVERAGE_FILTER_COUNT 5
 #define SERIAL_SPEED 115200
 #pragma endregion
 
 #pragma region Constants
 
-const uint8_t AnalogPins_g[SENSORS_COUNT] = { S1, S2, S3, S4, S5, S6, S7, S8 };
+const uint8_t AnalogPins_g[SENSORS_COUNT] = { S1, S2, S3 };
 
 #pragma endregion
 
@@ -29,13 +29,15 @@ const uint8_t AnalogPins_g[SENSORS_COUNT] = { S1, S2, S3, S4, S5, S6, S7, S8 };
 
 uint16_t SensorValues_g[SENSORS_COUNT][AVERAGE_FILTER_COUNT];
 
-uint16_t AvgSensorValues_g[SENSORS_COUNT] = { 0, 0, 0, 0, 0, 0, 0, 0 };
+uint16_t AvgSensorValues_g[SENSORS_COUNT];
 
 uint16_t CalibrationSensorValues_g[SENSORS_COUNT][20];
 
 #pragma endregion
 
 #pragma region Prototypes Functions
+
+void clear_avg_values();
 
 void fill_senzor_data();
 
@@ -61,10 +63,18 @@ void loop()
 	fill_senzor_data();
 	proces_sensor_data();
 	display_average_data();
-	delay(700);
+	delay(100);
 }
 
 #pragma region Functions
+
+void clear_avg_values()
+{
+	for (int SensorIndex = 0; SensorIndex < SENSORS_COUNT; SensorIndex++)
+	{
+		AvgSensorValues_g[SensorIndex] = 0 ;
+	}
+}
 
 void fill_senzor_data()
 {
